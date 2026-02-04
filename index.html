@@ -1,30 +1,89 @@
-<div id="repo-list">正在掃描倉庫檔案...</div>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alinux Repository</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #00ff41;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 30px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #00ff41;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+        }
+        h1 {
+            border-bottom: 2px solid #00ff41;
+            padding-bottom: 10px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+        .info {
+            background: rgba(0, 255, 65, 0.1);
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        li::before {
+            content: "> ";
+        }
+        a {
+            color: #00ff41;
+            text-decoration: none;
+            border: 1px solid transparent;
+            padding: 2px 8px;
+        }
+        a:hover {
+            background: #00ff41;
+            color: #0d0d0d;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8em;
+            text-align: center;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
 
-<script>
-    const username = "你的GitHub帳號";
-    const repo = "repo_1";
-    const path = "packages"; // 存放 .aip 的資料夾
+<div class="container">
+    <h1>Alinux Repo</h1>
+    
+    <div class="info">
+        [系統狀態]: 伺服器連線正常<br>
+        [索引檔案]: package.list 已就緒<br>
+        [安裝指令]: apm install <套件名稱>
+    </div>
 
-    fetch(`https://api.github.com/repos/${username}/${repo}/contents/${path}`)
-        .then(response => response.json())
-        .then(files => {
-            const listDiv = document.getElementById('repo-list');
-            listDiv.innerHTML = '';
-            
-            // 篩選出所有 .aip 結尾的檔案
-            const aipFiles = files.filter(file => file.name.endsWith('.aip'));
-            
-            aipFiles.forEach(file => {
-                const card = document.createElement('div');
-                card.className = 'pkg-card';
-                card.innerHTML = `
-                    <div><strong>${file.name}</strong></div>
-                    <a href="${file.download_url}" class="btn">立即下載</a>
-                `;
-                listDiv.appendChild(card);
-            });
-        })
-        .catch(err => {
-            listDiv.innerHTML = "無法讀取倉庫，請檢查 API 限制或路徑。";
-        });
-</script>
+    <h3>📦 可用套件列表</h3>
+    <ul id="package-list">
+        <li><span>anshell</span> <a href="packages/anshell.aip">[下載 AIP]</a></li>
+        <li><span>htop</span> <a href="packages/htop.aip">[下載 AIP]</a></li>
+    </ul>
+
+    <div class="footer">
+        &copy; 2026 Alinux Project - ThinkPad T470 Inside
+    </div>
+</div>
+
+</body>
+</html>
