@@ -1,17 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<title>REPO - Home</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="assets/css/style.css?v=1">
+    <meta charset="UTF-8">
+    <title>Alinux Repo Browser</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: auto; padding: 20px; background: #f4f4f9; }
+        .pkg-card { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .btn { background: #007bff; color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; }
+    </style>
 </head>
 <body>
+    <h1>🛰️ Alinux 雲端套件庫</h1>
+    <div id="repo-list">正在載入套件清單...</div>
 
-<main>
-  <h1 class="fade">Welcome to Apm Repo.</h1>
-  <p class="slide">This is a repo.</p>
-</main>
-
+    <script>
+        // 讀取同目錄下的 index.json
+        fetch('index.json')
+            .then(response => response.json())
+            .then(data => {
+                const listDiv = document.getElementById('repo-list');
+                listDiv.innerHTML = ''; // 清空字串
+                
+                // 假設你的 index.json 格式是一個陣列 [ { "name": "anshell", "version": "1.0" }, ... ]
+                data.packages.forEach(pkg => {
+                    const card = document.createElement('div');
+                    card.className = 'pkg-card';
+                    card.innerHTML = `
+                        <div>
+                            <strong>${pkg.name}</strong> (v${pkg.version})
+                        </div>
+                        <a href="packages/${pkg.name}.aip" class="btn">下載 AIP</a>
+                    `;
+                    listDiv.appendChild(card);
+                });
+            })
+            .catch(err => {
+                document.getElementById('repo-list').innerHTML = '無法載入 index.json，請確認檔案格式正確。';
+            });
+    </script>
 </body>
 </html>
